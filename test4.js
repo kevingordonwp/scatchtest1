@@ -29,7 +29,6 @@
     };
 
     ext.power = function(base, exponent) {
-        console.log("calc: " + Math.pow(base, exponent));
         return Math.pow(base, exponent);
     };
 
@@ -41,7 +40,6 @@
               success: function( weather_data ) {
                   // Got the data - parse it and return the temperature
                   temperature = weather_data['main']['temp'];
-                  console.log("temperature!! " + temperature);
                   callback(temperature);
               }
         });
