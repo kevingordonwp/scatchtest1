@@ -51,8 +51,10 @@
             // Block type, block name, function name
             [' ', 'my first block', 'my_first_block'],
             ['w', 'wait for random time', 'wait_random'],
-            ['r', '%n ^ %n', 'power', 2, 3],
-            ['R', 'current temperature in city %s', 'get_temp', 'Boston, MA']
+            [' ', '%n ^ %n', 'power', 2, 3],
+            [' ', 'current temperature in city %s', 'get_temp', 'Boston, MA']
+            /*['r', '%n ^ %n', 'power', 2, 3],
+            ['R', 'current temperature in city %s', 'get_temp', 'Boston, MA']*/
         ]
     };
 
