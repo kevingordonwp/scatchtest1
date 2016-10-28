@@ -1,0 +1,103 @@
+<html>
+<head>
+	<script   src="https://code.jquery.com/jquery-3.1.1.js"   integrity="sha256-16cdPddA6VdVInumRGo6IbivbERE8p7CQR3HzTBuELA="   crossorigin="anonymous"></script>
+	<script src="https://cdn.worldpay.com/v1/worldpay.js"></script>
+</head>
+<body>
+
+	<form action="/complete" id="paymentForm" method="post">
+
+  <span id="paymentErrors"></span>
+
+  <div class="form-row">
+    <label>Name on Card</label>
+    <input data-worldpay="name" name="name" type="text" value="Kevmondo" />
+  </div>
+  <div class="form-row">
+    <label>Card Number</label>
+    <input data-worldpay="number" size="20" type="text" value="4444333322221111" />
+  </div>
+  <div class="form-row">
+    <label>Expiration (MM/YYYY)</label> 
+    <input data-worldpay="exp-month" size="2" type="text" value="02"/> 
+    <label> / </label>
+    <input data-worldpay="exp-year" size="4" type="text" value="2020" />
+  </div>
+  <div class="form-row">
+    <label>CVC</label>
+    <input data-worldpay="cvc" size="4" type="text" value="123"/>
+  </div>
+
+  <input type="submit" value="Place Order" />
+
+</form>
+
+
+
+
+<input value="Make payment" onclick="javascript:make_payment();" />
+
+<script type="text/javascript">
+
+
+
+
+var form = document.getElementById('paymentForm');
+
+Worldpay.useOwnForm({
+  'clientKey': 'Token T_C_97e8cbaa-14e0-4b1c-b2af-469daf8f1356',
+  'form': form,
+  'reusable': false,
+  'callback': function(status, response) {
+    document.getElementById('paymentErrors').innerHTML = '';
+    if (response.error) {             
+      Worldpay.handleError(form, document.getElementById('paymentErrors'), response.error); 
+    } else {
+      var token = response.token;
+      Worldpay.formBuilder(form, 'input', 'hidden', 'token', token);
+      form.submit();
+    }
+  }
+});
+
+
+
+
+    function make_payment() {
+        // Make an AJAX call to the Open Weather Maps API
+        
+        $.ajax({
+        		
+              type: "POST",
+              headers: { "Authorization": "Token T_C_97e8cbaa-14e0-4b1c-b2af-469daf8f1356",
+              				 "Content-type:": "application/json"},
+              beforeSend : function(xhr) {
+              	console.log("Setting auth header, does it fire!??");
+              	    xhr.setRequestHeader( "Authorization", "Token T_C_97e8cbaa-14e0-4b1c-b2af-469daf8f1356" );
+              	    xhr.setRequestHeader( "Content-type:", "application/json" );
+    			},
+              url: 'https://api.worldpay.com/v1/orders',
+              data: { 
+              	    	"token" : "your-token",
+    					/* "orderType": "ECOM",  */
+					    "orderDescription": "Kev paying to open the pod bay doors", 
+					    "amount": 1311, 
+					    "currencyCode": "GBP" },
+              dataType: 'jsonp',
+              success: function(responseData) {
+                  // Got the data - parse it and return the temperature
+                  console.log("PAYMENT should have HAPPENED! " + responseData);
+              },
+			  error: function (xhr, tst, err) {
+				     console.log('XHR ERROR ' + xhr.status +  tst + err);
+			  },
+        });
+
+    };
+
+
+
+
+ </script>
+
+ </body>

@@ -1,0 +1,131 @@
+<html>
+<head>
+	<script   src="https://code.jquery.com/jquery-3.1.1.js"   integrity="sha256-16cdPddA6VdVInumRGo6IbivbERE8p7CQR3HzTBuELA="   crossorigin="anonymous"></script>
+	<script src="https://cdn.worldpay.com/v1/worldpay.js"></script>
+
+</head>
+<body>
+
+
+<form action="javascript:doSubmitKev();" id="paymentForm" method="post">
+
+  <span id="paymentErrors"></span>
+
+  <div class="form-row">
+    <label>Name on Card</label>
+    <input data-worldpay="name" name="name" type="text" value="Kev mondo" />
+  </div>
+  <div class="form-row">
+    <label>Card Number</label>
+    <input data-worldpay="number" size="20" type="text" value="4444333322221111" />
+  </div>
+  <div class="form-row">
+    <label>Expiration (MM/YYYY)</label> 
+    <input data-worldpay="exp-month" size="2" type="text" value="02"/> 
+    <label> / </label>
+    <input data-worldpay="exp-year" size="4" type="text" value="2020" />
+  </div>
+  <div class="form-row">
+    <label>CVC</label>
+    <input data-worldpay="cvc" size="4" type="text" value="123"/>
+  </div>
+
+  <input type="submit" value="Place Order" />
+
+    <input type="button" value="Make payment" onclick="javascript:makePayment();" />
+
+</form>
+
+
+<script type="text/javascript">
+var form = document.getElementById('paymentForm');
+var globalToken = "";
+
+Worldpay.useOwnForm({
+  'clientKey': 'T_C_97e8cbaa-14e0-4b1c-b2af-469daf8f1356',
+  'form': form,
+  'reusable': false,
+  'callback': function(status, response) {
+    document.getElementById('paymentErrors').innerHTML = '';
+    if (response.error) {             
+      console.log("WAS AN ERROR");
+      Worldpay.handleError(form, document.getElementById('paymentErrors'), response.error); 
+    } else {
+      var token = response.token;
+      console.log("token: " + token);
+      globalToken = token;
+      console.log("SET GLOBAL TOKEN: " + token);
+      //Worldpay.formBuilder(form, 'input', 'hidden', 'token', token);
+      //form.submit();
+      //makePayment();
+    }
+  }
+});
+
+function doSubmitKev() {
+	console.log("something...");
+}
+
+
+function makePayment() {
+
+// 	curl https://api.worldpay.com/v1/orders 
+// -H "Authorization:your-test-service-key" 
+// -H "Content-type: application/json" 
+// -X POST 
+// -d '{ 
+//     "token" : "your-order-token", 
+//     "orderDescription" : "your-order-description", 
+//     "amount" : 500, 
+//     "currencyCode" : "GBP" }' 
+
+// The response to this call will include the following JSON object:
+
+// { 
+//     "orderCode":"worldpay-generated-order-code", 
+//     "token":"your-order-token", 
+//     "orderDescription":"your-order-description", 
+//     "amount":500, 
+//     "currencyCode":"GBP", 
+//     "paymentStatus":"SUCCESS", 
+//     "paymentResponse":
+//     { 
+//         "type":"ObfuscatedCard", 
+//         "name":"name-of-shopper", 
+//         "expiryMonth":"7", 
+//         "expiryYear":"2018",
+//         "cardType":"VISA", 
+//         "maskedCardNumber":"**** **** **** 1111" }, 
+//     "environment":"TEST" 
+// } 
+	$.ajax({
+	        url: 'https://api.worldpay.com/v1/orders',
+	        type: 'POST',
+	        beforeSend: function(xhr) {
+	             //xhr.setRequestHeader("Authorization", "Bearer T_C_97e8cbaa-14e0-4b1c-b2af-469daf8f1356");
+	            //xhr.setRequestHeader("Authorization", "T_C_97e8cbaa-14e0-4b1c-b2af-469daf8f1356");
+	            xhr.setRequestHeader("Authorization", "T_S_3bdadc9c-54e0-4587-8d91-29813060fecd");
+	            xhr.setRequestHeader("Content-Type", "application/json");
+	        }, 
+	        /*clientKey: "T_C_97e8cbaa-14e0-4b1c-b2af-469daf8f1356",*/
+	        /*headers: {"Authorization":"T_C_97e8cbaa-14e0-4b1c-b2af-469daf8f1356"}, */
+	        /*verify=True,*/
+	        success: function(data){
+	        	console.log("SUCCESS");
+	            console.log(data);
+	            //process the JSON data etc
+	        },
+	        dataType: 'json',
+	        jsonp: 'false',
+	        data: "{\"token\" : \"" + globalToken + "\", \"orderDescription\" : \"OPEN\", \"amount\" : 1420, \"currencyCode\" : \"GBP\"}"
+	})
+
+}
+</script>
+
+
+
+
+
+</body>
+</html>

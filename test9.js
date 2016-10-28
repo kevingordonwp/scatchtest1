@@ -33,36 +33,32 @@
     };
 
     ext.make_payment = function() {
-        // Make an AJAX call to the Open Weather Maps API
+    
         $.ajax({
+            
               type: "POST",
-              url: 'https://api.worldpay.com/v1/orders',
+              //headers: { "Authorization": "T_S_3bdadc9c-54e0-4587-8d91-29813060fecd",
+              //         "Content-Type": "application/json"},
               beforeSend : function(xhr) {
+                console.log("Setting auth header, does it fire!??");
                     xhr.setRequestHeader( "Authorization", "T_S_3bdadc9c-54e0-4587-8d91-29813060fecd" );
-                    
-                },
-                
-              data: { 
-    "paymentMethod":{
-    "type":"Card",
-    "name":"cardholder-name",
-    "expiryMonth":"2",
-    "expiryYear":"2020",
-    "cardNumber":"4444333322221111",
-    "cvc":"123",
-    "issueNumber":"1"
-  }, 
-    "orderType": "ECOM", 
-    "orderDescription": "Kev paying to open the pod bay doors", 
-    "amount": 1942, 
-        "currencyCode": "GBP" },
-              dataType: 'jsonp',
+                    //xhr.setRequestHeader( "Content-Type", "application/json" );
+          //xhr.setRequestHeader( "Access-Control-Allow-Origin: *")
+              //xhr.setRequestHeader( "Authorization", "Token T_C_97e8cbaa-14e0-4b1c-b2af-469daf8f1356" );
+          },
+              contentType:    'application/json',
+              url: 'https://api.worldpay.com/v1/orders',
+              data: "{\"paymentMethod\":{\"type\":\"Card\",\"name\":\"cardholder-name\",\"expiryMonth\":\"2\",              \"expiryYear\":\"2020\",              \"cardNumber\":\"4444333322221111\",              \"cvc\":\"123\",              \"issueNumber\":\"1\"           },              \"orderType\": \"ECOM\",              \"orderDescription\": \"your-order-description\",               \"amount\": 500,              \"currencyCode\": \"GBP\" }",
+              //dataType: 'json',
               success: function(responseData) {
                   // Got the data - parse it and return the temperature
                   console.log("PAYMENT should have HAPPENED! " + responseData);
-              }
-        });
-
+              },
+        error: function (xhr, tst, err) {
+             console.log('XHR ERROR ' + xhr.status +  tst + err + xhr.responseText);
+        },
+        })
+  
     };
 
 

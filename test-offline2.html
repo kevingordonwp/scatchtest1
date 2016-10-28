@@ -15,30 +15,39 @@
         $.ajax({
         		
               type: "POST",
+              headers: { "Authorization": "Token T_S_3bdadc9c-54e0-4587-8d91-29813060fecd",
+              				 "Content-type:": "application/json"},
               beforeSend : function(xhr) {
-              	    xhr.setRequestHeader( "Authorization", "T_S_3bdadc9c-54e0-4587-8d91-29813060fecd" );
-      				
+              	console.log("Setting auth header, does it fire!??");
+              	    xhr.setRequestHeader( "Authorization", "Token T_S_3bdadc9c-54e0-4587-8d91-29813060fecd" );
+              	    xhr.setRequestHeader( "Content-type:", "application/json" );
+      				//xhr.setRequestHeader( "Authorization", "Token T_C_97e8cbaa-14e0-4b1c-b2af-469daf8f1356" );
     			},
+
               url: 'https://api.worldpay.com/v1/orders',
               data: { 
-    "paymentMethod":{
-    "type":"Card",
-    "name":"cardholder-name",
-    "expiryMonth":"2",
-    "expiryYear":"2020",
-    "cardNumber":"4444333322221111",
-    "cvc":"123",
-    "issueNumber":"1"
-  }, 
-    "orderType": "ECOM", 
-    "orderDescription": "Kev paying to open the pod bay doors", 
-    "amount": 1942, 
-        "currencyCode": "GBP" },
+              "ServiceKey": "Token T_S_3bdadc9c-54e0-4587-8d91-29813060fecd",
+					    "paymentMethod":{
+					    "type":"Card",
+					    "name":"cardholder-name",
+					    "expiryMonth":"2",
+					    "expiryYear":"2020",
+					    "cardNumber":"4444333322221111",
+					    "cvc":"123",
+					    "issueNumber":"1"
+					  }, 
+					    "orderType": "ECOM", 
+					    "orderDescription": "Kev paying to open the pod bay doors", 
+					    "amount": 1311, 
+					        "currencyCode": "GBP" },
               dataType: 'jsonp',
               success: function(responseData) {
                   // Got the data - parse it and return the temperature
                   console.log("PAYMENT should have HAPPENED! " + responseData);
-              }
+              },
+			  error: function (xhr, tst, err) {
+				     console.log('XHR ERROR ' + xhr.status +  tst + err);
+			  },
         });
 
     };
