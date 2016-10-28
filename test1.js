@@ -51,7 +51,7 @@
             [' ', 'my first block', 'my_first_block'],
             ['w', 'wait for random time', 'wait_random'],
             ['r', '%n ^ %n', 'power', 2, 3],
-            ['R', 'current temperature in city %s', 'get_temp', 'Boston, MA'],
+            ['R', 'current temperature in city %s', 'get_temp', 'Boston, MA']
     };
 
     // Register the extension
