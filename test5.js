@@ -41,7 +41,7 @@
     "Authorization": "T_S_3bdadc9c-54e0-4587-8d91-29813060fecd",
     "Content-type": "application/json"
   },
-              data: '{ 
+              data: { 
     "paymentMethod":{
     "type":"Card",
     "name":"cardholder-name",
@@ -54,7 +54,7 @@
     "orderType": "ECOM", 
     "orderDescription": "Kev paying to open the pod bay doors", 
     "amount": 1942, 
-        "currencyCode": "GBP" }',
+        "currencyCode": "GBP" },
               dataType: 'jsonp',
               success: function(responseData) {
                   // Got the data - parse it and return the temperature
